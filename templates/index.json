@@ -1,0 +1,116 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "tt-hero": {
+      "type": "tt-hero",
+      "settings": {
+        "slide1_image": "shopify://shop_images/Slide_1.png",
+        "slide1_label": "Welcome To TenTwenty Farms",
+        "slide1_title": "From Our Farms To Your Hands",
+        "slide2_image": "shopify://shop_images/Slide_2.png",
+        "slide2_label": "Welcome To TenTwenty Farms",
+        "slide2_title": "From Our Farms To Your Hands",
+        "slide3_image": "shopify://shop_images/Slide_3.png",
+        "slide3_label": "Welcome To TenTwenty Farms",
+        "slide3_title": "From Our Farms To Your Hands",
+        "slide4_image": "shopify://shop_images/Slide_4.png",
+        "slide4_label": "Welcome To TenTwenty Farms",
+        "slide4_title": "From Our Farms To Your Hands"
+      }
+    },
+    "tt-quality": {
+      "type": "tt-quality",
+      "blocks": {
+        "p1": {
+          "type": "product_card",
+          "settings": {
+            "image": "shopify://shop_images/wheat_field.png",
+            "tagline": "Harvested Fresh",
+            "title": "Wheat & Grain",
+            "description": "Premium quality wheat and grain harvested from our certified organic fields, delivered straight to your door."
+          }
+        },
+        "p2": {
+          "type": "product_card",
+          "settings": {
+            "image": "shopify://shop_images/corn.png",
+            "tagline": "Stone Ground",
+            "title": "Corn Flour",
+            "description": "Finely milled corn flour made from non-GMO corn, perfect for baking and everyday use."
+          }
+        },
+        "p3": {
+          "type": "product_card",
+          "settings": {
+            "image": "shopify://shop_images/vegetables.png",
+            "tagline": "Farm Fresh",
+            "title": "Seasonal Vegetables",
+            "description": "Hand-picked seasonal vegetables grown without pesticides, full of natural flavour."
+          }
+        },
+        "p4": {
+          "type": "product_card",
+          "settings": {
+            "image": "shopify://shop_images/olive-oil.png",
+            "tagline": "Cold Pressed",
+            "title": "Farm Oils",
+            "description": "Pure cold-pressed oils from sunflower, olive and flaxseed — rich in natural goodness."
+          }
+        },
+        "p5": {
+          "type": "product_card",
+          "settings": {
+            "image": "shopify://shop_images/honey.png",
+            "tagline": "Natural & Raw",
+            "title": "Honey & Dairy",
+            "description": "Raw honey and fresh dairy products from our free-range animals, as nature intended."
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "settings": {
+        "heading": "Quality Products",
+        "subtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      }
+    },
+    "tt-marquee": {
+      "type": "tt-marquee",
+      "settings": {
+        "label": "Our Promise",
+        "heading": "Grown with purpose delivered with care",
+        "subtext": "We bring the finest produce straight from our certified organic farms to your table — no shortcuts, no compromises.",
+        "cta_label": "Explore our story",
+        "marquee_row1": "Truly Splendid Designs · Premium Quality · Crafted With Care · Honest Ingredients · Farm Sourced · ",
+        "marquee_row2": "Organic Certified · Sustainable Farming · Pure & Natural · Direct From Farm · Hand Picked · "
+      }
+    },
+    "tt-products": {
+      "type": "tt-products",
+      "settings": {
+        "heading": "Our Products",
+        "collection": "",
+        "products_count": 4
+      }
+    }
+  },
+  "order": [
+    "tt-hero",
+    "tt-quality",
+    "tt-marquee",
+    "tt-products"
+  ]
+}

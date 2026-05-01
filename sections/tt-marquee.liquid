@@ -1,0 +1,82 @@
+<section class="tt-marquee" data-animate>
+
+  {%- comment -%} ── INTRO BLOCK ─────────────────────────────────────── {%- endcomment -%}
+  <div class="tt-marquee__intro">
+    <div class="tt-marquee__intro-left">
+      <span class="tt-marquee__label">{{ section.settings.label }}</span>
+      <h2 class="tt-marquee__heading">
+        {%- assign words = section.settings.heading | split: ' ' -%}
+        {%- for word in words -%}
+          <span class="tt-marquee__word-wrap"><span class="tt-marquee__word">{{ word }}</span></span>{% unless forloop.last %} {% endunless %}
+        {%- endfor -%}
+      </h2>
+    </div>
+    <div class="tt-marquee__intro-right">
+      <p class="tt-marquee__subtext">{{ section.settings.subtext }}</p>
+      {%- if section.settings.cta_label != blank and section.settings.cta_url != blank -%}
+        <a href="{{ section.settings.cta_url }}" class="tt-marquee__cta">
+          {{ section.settings.cta_label }}
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M1 7H13M7 1L13 7L7 13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} ── MARQUEE STRIP ────────────────────────────────────── {%- endcomment -%}
+  <div class="tt-marquee__strip-outer">
+
+    {%- comment -%} Row 1: moves left {%- endcomment -%}
+    <div class="tt-marquee__track tt-marquee__track--left" aria-hidden="true">
+      {%- assign row1 = section.settings.marquee_row1 | default: "Truly Splendid Designs · Premium Quality · Crafted With Care · Honest Ingredients · Farm Sourced · " -%}
+      {%- for i in (1..4) -%}
+        <span class="tt-marquee__item">
+          {%- assign parts = row1 | split: '·' -%}
+          {%- for part in parts -%}
+            {%- if part != blank -%}
+              <span class="tt-marquee__text">{{ part | strip }}</span>
+              <span class="tt-marquee__dot">·</span>
+            {%- endif -%}
+          {%- endfor -%}
+        </span>
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} Row 2: moves right {%- endcomment -%}
+    <div class="tt-marquee__track tt-marquee__track--right" aria-hidden="true">
+      {%- assign row2 = section.settings.marquee_row2 | default: "Organic Certified · Sustainable Farming · Pure & Natural · Direct From Farm · Hand Picked · " -%}
+      {%- for i in (1..4) -%}
+        <span class="tt-marquee__item">
+          {%- assign parts = row2 | split: '·' -%}
+          {%- for part in parts -%}
+            {%- if part != blank -%}
+              <span class="tt-marquee__text tt-marquee__text--outline">{{ part | strip }}</span>
+              <span class="tt-marquee__dot">·</span>
+            {%- endif -%}
+          {%- endfor -%}
+        </span>
+      {%- endfor -%}
+    </div>
+
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Marquee Band",
+  "settings": [
+    { "type": "text",     "id": "label",       "label": "Label",       "default": "Our Promise" },
+    { "type": "text",     "id": "heading",      "label": "Heading",     "default": "Grown with purpose delivered with care" },
+    { "type": "textarea","id": "subtext",      "label": "Subtext",     "default": "We bring the finest produce straight from our certified organic farms to your table — no shortcuts, no compromises." },
+    { "type": "text",     "id": "cta_label",   "label": "CTA Label",   "default": "Explore our story" },
+    { "type": "url",      "id": "cta_url",     "label": "CTA Link" },
+    { "type": "text",     "id": "marquee_row1","label": "Row 1 text (separate items with ·)", "default": "Truly Splendid Designs · Premium Quality · Crafted With Care · Honest Ingredients · Farm Sourced · " },
+    { "type": "text",     "id": "marquee_row2","label": "Row 2 text (separate items with ·)", "default": "Organic Certified · Sustainable Farming · Pure & Natural · Direct From Farm · Hand Picked · " }
+  ],
+  "presets": [{ "name": "Marquee Band" }]
+}
+{% endschema %}
+
+<script src="{{ 'tt-marquee.js' | asset_url }}" defer></script>

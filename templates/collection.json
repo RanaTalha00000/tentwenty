@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "tt-collection": {
+      "type": "tt-collection",
+      "settings": {}
+    }
+  },
+  "order": ["tt-collection"]
+}

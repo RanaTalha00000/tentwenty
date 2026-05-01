@@ -1,0 +1,94 @@
+<section class="tt-products" data-animate>
+
+  {%- assign featured_collection = collections[section.settings.collection] -%}
+  {%- assign view_all_url = featured_collection.url | default: '/collections/all' -%}
+  {%- assign view_all_label = section.settings.view_all_label | default: 'View All →' -%}
+
+  <div class="tt-products__header">
+    <h2 class="tt-products__heading">{{ section.settings.heading }}</h2>
+    <a href="{{ view_all_url }}" class="tt-products__view-all">{{ view_all_label }}</a>
+  </div>
+
+  <div class="tt-products__grid">
+    {% assign collection = collections[section.settings.collection] %}
+    {% if collection %}
+      {% for product in collection.products limit: section.settings.products_count %}
+        <div class="tt-products__item">
+          <a href="{{ product.url }}" class="tt-products__img-wrap">
+            {% if product.featured_image %}
+              {{ product.featured_image | image_url: width: 600 | image_tag:
+                class: 'tt-products__img',
+                alt: product.featured_image.alt,
+                loading: 'lazy'
+              }}
+            {% endif %}
+            <div class="tt-products__overlay">
+              <span class="tt-products__quick-view">View Product</span>
+            </div>
+          </a>
+          <div class="tt-products__info">
+            <h3 class="tt-products__title">{{ product.title }}</h3>
+            <p class="tt-products__price">{{ product.price | money }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      {% for product in collections.all.products limit: section.settings.products_count %}
+        <div class="tt-products__item">
+          <a href="{{ product.url }}" class="tt-products__img-wrap">
+            {% if product.featured_image %}
+              {{ product.featured_image | image_url: width: 600 | image_tag:
+                class: 'tt-products__img',
+                alt: product.featured_image.alt,
+                loading: 'lazy'
+              }}
+            {% endif %}
+            <div class="tt-products__overlay">
+              <span class="tt-products__quick-view">View Product</span>
+            </div>
+          </a>
+          <div class="tt-products__info">
+            <h3 class="tt-products__title">{{ product.title }}</h3>
+            <p class="tt-products__price">{{ product.price | money }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Products Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our Products"
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View All Button Label",
+      "default": "View All →"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "label": "Number of Products",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "presets": [{ "name": "Products Grid" }]
+}
+{% endschema %}

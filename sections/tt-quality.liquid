@@ -1,0 +1,71 @@
+<section class="tt-quality" data-animate>
+  <div class="tt-quality__intro">
+    <h2 class="tt-quality__heading">{{ section.settings.heading }}</h2>
+    <p class="tt-quality__subtext">{{ section.settings.subtext }}</p>
+  </div>
+
+  <div class="tt-quality__wrap" id="ttQualityWrap">
+    <div class="tt-quality__track" id="ttQualityTrack">
+      {% for block in section.blocks %}
+        <div
+          class="tt-quality__slide {% if forloop.first %}active{% endif %}"
+          data-index="{{ forloop.index0 }}"
+          data-tagline="{{ block.settings.tagline }}"
+          data-name="{{ block.settings.title }}"
+          data-desc="{{ block.settings.description }}"
+          {{ block.shopify_attributes }}
+        >
+          {% if block.settings.image %}
+            {{
+              block.settings.image
+              | image_url: width: 600
+              | image_tag: class: 'tt-quality__img', alt: block.settings.image.alt, loading: 'lazy'
+            }}
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="tt-quality__cursor" id="ttQualityCursor">Drag</div>
+  </div>
+
+  <div class="tt-quality__info">
+    <span class="tt-quality__tagline" id="ttQualityTagline">{{ section.blocks[0].settings.tagline }}</span>
+    <h3 class="tt-quality__name" id="ttQualityName">{{ section.blocks[0].settings.title }}</h3>
+    <p class="tt-quality__desc" id="ttQualityDesc">{{ section.blocks[0].settings.description }}</p>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Quality Products",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Quality Products" },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_card",
+      "name": "Product Card",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "tagline", "label": "Tagline", "default": "Harvested Fresh" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Wheat & Grain" },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Premium quality wheat and grain harvested from our certified organic fields."
+        }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Quality Products" }]
+}
+{% endschema %}
+
+<script src="{{ 'tt-quality.js' | asset_url }}" defer></script>

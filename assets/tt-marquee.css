@@ -1,0 +1,279 @@
+/* ================================================================
+   tt-marquee.css
+   Marquee Band section — KCA-level premium animations
+   ================================================================ */
+
+/* ── SECTION WRAPPER ─────────────────────────────────────────── */
+.tt-marquee {
+  background-color: var(--color-bg);
+  padding: 100px 0 0;
+  overflow: hidden;
+}
+
+/* ── INTRO BLOCK ─────────────────────────────────────────────── */
+.tt-marquee__intro {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 0 60px 72px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.tt-marquee__intro-left {
+  flex: 0 0 auto;
+  max-width: 560px;
+}
+
+.tt-marquee__intro-right {
+  flex: 0 0 auto;
+  max-width: 380px;
+  padding-top: 48px;
+}
+
+/* ── LABEL ───────────────────────────────────────────────────── */
+.tt-marquee__label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  margin-bottom: 20px;
+
+  /* reveal animation */
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s;
+}
+
+.tt-marquee--visible .tt-marquee__label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── HEADING ─────────────────────────────────────────────────── */
+.tt-marquee__heading {
+  font-size: clamp(32px, 4vw, 54px);
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--color-text);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+/* Word wrapper — the clip mask */
+.tt-marquee__word-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  margin-right: 0.22em;
+}
+
+/* The word itself slides up from inside the clip */
+.tt-marquee__word {
+  display: inline-block;
+  transform: translateY(105%);
+  opacity: 0;
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity   0.5s  ease;
+}
+
+/* Stagger each word */
+.tt-marquee__word-wrap:nth-child(1)  .tt-marquee__word { transition-delay: 0.10s, 0.10s; }
+.tt-marquee__word-wrap:nth-child(2)  .tt-marquee__word { transition-delay: 0.17s, 0.17s; }
+.tt-marquee__word-wrap:nth-child(3)  .tt-marquee__word { transition-delay: 0.24s, 0.24s; }
+.tt-marquee__word-wrap:nth-child(4)  .tt-marquee__word { transition-delay: 0.31s, 0.31s; }
+.tt-marquee__word-wrap:nth-child(5)  .tt-marquee__word { transition-delay: 0.38s, 0.38s; }
+.tt-marquee__word-wrap:nth-child(6)  .tt-marquee__word { transition-delay: 0.45s, 0.45s; }
+.tt-marquee__word-wrap:nth-child(7)  .tt-marquee__word { transition-delay: 0.52s, 0.52s; }
+.tt-marquee__word-wrap:nth-child(8)  .tt-marquee__word { transition-delay: 0.59s, 0.59s; }
+.tt-marquee__word-wrap:nth-child(9)  .tt-marquee__word { transition-delay: 0.66s, 0.66s; }
+.tt-marquee__word-wrap:nth-child(10) .tt-marquee__word { transition-delay: 0.73s, 0.73s; }
+
+.tt-marquee--visible .tt-marquee__word {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ── SUBTEXT ─────────────────────────────────────────────────── */
+.tt-marquee__subtext {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--color-text-light);
+  margin: 0 0 28px;
+
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.7s ease 0.55s, transform 0.7s ease 0.55s;
+}
+
+.tt-marquee--visible .tt-marquee__subtext {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── CTA LINK ────────────────────────────────────────────────── */
+.tt-marquee__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  position: relative;
+
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease 0.7s, transform 0.6s ease 0.7s;
+}
+
+.tt-marquee__cta::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-text);
+  transition: width 0.3s ease;
+}
+
+.tt-marquee__cta:hover::after {
+  width: 100%;
+}
+
+.tt-marquee__cta svg {
+  transition: transform 0.3s ease;
+}
+
+.tt-marquee__cta:hover svg {
+  transform: translate(3px, -3px);
+}
+
+.tt-marquee--visible .tt-marquee__cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── MARQUEE STRIP ───────────────────────────────────────────── */
+.tt-marquee__strip-outer {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid rgba(26, 26, 26, 0.1);
+  overflow: hidden;
+  cursor: default;
+}
+
+/* Each track row */
+.tt-marquee__track {
+  display: flex;
+  white-space: nowrap;
+  width: max-content;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(26, 26, 26, 0.1);
+}
+
+/* Row 1 — scrolls left */
+.tt-marquee__track--left {
+  animation: tt-marquee-left 55s linear infinite;
+}
+
+/* Row 2 — scrolls right */
+.tt-marquee__track--right {
+  animation: tt-marquee-right 60s linear infinite;
+}
+
+@keyframes tt-marquee-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-25%); }
+}
+
+@keyframes tt-marquee-right {
+  from { transform: translateX(-25%); }
+  to   { transform: translateX(0); }
+}
+
+.tt-marquee__item {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Filled text */
+.tt-marquee__text {
+  display: inline-block;
+  font-size: clamp(22px, 3vw, 38px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  padding: 0 12px;
+  transition: opacity 0.3s ease;
+}
+
+/* Outlined / stroke text — alternating style */
+.tt-marquee__text--outline {
+  color: transparent;
+  -webkit-text-stroke: 1.2px var(--color-text);
+}
+
+/* Separator dot */
+.tt-marquee__dot {
+  display: inline-block;
+  font-size: 24px;
+  color: var(--color-text-light);
+  opacity: 0.4;
+  padding: 0 4px;
+}
+
+/* Hover: pause + dim everything, brighten hovered item */
+.tt-marquee__strip-outer:hover .tt-marquee__text {
+  opacity: 0.35;
+}
+
+.tt-marquee__strip-outer:hover .tt-marquee__text:hover {
+  opacity: 1;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .tt-marquee__intro {
+    flex-direction: column;
+    padding: 0 24px 56px;
+    gap: 32px;
+  }
+  .tt-marquee__intro-right {
+    padding-top: 0;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .tt-marquee {
+    padding-top: 64px;
+  }
+  .tt-marquee__intro {
+    padding: 0 20px 40px;
+  }
+  .tt-marquee__text {
+    font-size: 22px;
+  }
+}
+
+/* ── REDUCED MOTION ──────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .tt-marquee__track {
+    animation: none;
+  }
+  .tt-marquee__word,
+  .tt-marquee__label,
+  .tt-marquee__subtext,
+  .tt-marquee__cta {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}

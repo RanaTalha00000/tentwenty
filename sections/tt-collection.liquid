@@ -1,0 +1,360 @@
+{{- 'tt-collection.css' | asset_url | stylesheet_tag -}}
+
+<section class="tt-coll" data-section="tt-collection">
+
+  {%- comment -%} ── HERO HEADER ── {%- endcomment -%}
+  <header class="tt-coll__header">
+    <div class="tt-coll__header-inner">
+
+      <div class="tt-coll__header-top" data-reveal>
+        <span class="tt-coll__breadcrumb">
+          <a href="/">Home</a>
+          <span class="tt-coll__breadcrumb-sep">—</span>
+          <span>Collection</span>
+        </span>
+        <span class="tt-coll__product-badge">
+          {{ collection.products_count }} items
+        </span>
+      </div>
+
+      <h1 class="tt-coll__title" data-split-text>
+        Our <em>{{ collection.title }}</em>
+      </h1>
+
+      <div class="tt-coll__meta" data-reveal data-reveal-delay="2">
+        <div class="tt-coll__stat">
+          <span class="tt-coll__stat-num" data-count-up="{{ collection.products_count }}">0</span>
+          <span class="tt-coll__stat-label">Products</span>
+        </div>
+        <div class="tt-coll__stat">
+          <span class="tt-coll__stat-num">100%</span>
+          <span class="tt-coll__stat-label">Organic</span>
+        </div>
+        <div class="tt-coll__stat">
+          <span class="tt-coll__stat-num">Farm</span>
+          <span class="tt-coll__stat-label">Sourced</span>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  {%- comment -%} ── BODY: SIDEBAR + GRID ── {%- endcomment -%}
+  <div class="tt-coll__body">
+
+    {%- comment -%} ── SIDEBAR ── {%- endcomment -%}
+    <aside class="tt-coll__sidebar" id="ttFilterSidebar" data-sidebar>
+
+      <div class="tt-coll__sidebar-inner">
+        <div class="tt-coll__sidebar-head">
+          <span class="tt-coll__sidebar-label">Filters</span>
+          {%- assign has_active = false -%}
+          {%- for filter in collection.filters -%}
+            {%- if filter.active_values.size > 0 or filter.min_value.value or filter.max_value.value -%}
+              {%- assign has_active = true -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if has_active -%}
+            <a href="{{ collection.url }}" class="tt-coll__clear-all" data-clear-all>Clear all</a>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} ── ACTIVE PILLS ── {%- endcomment -%}
+        {%- if has_active -%}
+          <div class="tt-coll__active-pills">
+            {%- for filter in collection.filters -%}
+              {%- for v in filter.active_values -%}
+                <a href="{{ v.url_to_remove }}" class="tt-coll__pill">
+                  {{ v.label }}
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                    <path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  </svg>
+                </a>
+              {%- endfor -%}
+              {%- if filter.type == 'price_range' -%}
+                {%- if filter.min_value.value or filter.max_value.value -%}
+                  <a href="{{ filter.url_to_remove }}" class="tt-coll__pill">
+                    {{ filter.min_value.value | default: 0 | money }} – {{ filter.max_value.value | default: filter.range_max | money }}
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg>
+                  </a>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} ── FILTER GROUPS ── {%- endcomment -%}
+        {%- if collection.filters.size > 0 -%}
+
+          {%- for filter in collection.filters -%}
+            <div class="tt-coll__filter-group" data-filter-group>
+
+              <button
+                class="tt-coll__filter-toggle"
+                type="button"
+                aria-expanded="true"
+                aria-controls="filter-{{ forloop.index }}"
+                data-filter-toggle
+              >
+                <span>{{ filter.label }}</span>
+                {%- if filter.active_values.size > 0 -%}
+                  <span class="tt-coll__filter-badge">{{ filter.active_values.size }}</span>
+                {%- endif -%}
+                <svg class="tt-coll__filter-caret" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+
+              <div class="tt-coll__filter-body" id="filter-{{ forloop.index }}">
+
+                {%- if filter.type == 'price_range' -%}
+                  <div class="tt-coll__price-range" data-price-range data-filter-url="{{ collection.url }}">
+                    <div class="tt-coll__price-inputs">
+                      <div class="tt-coll__price-field">
+                        <span class="tt-coll__price-symbol">{{ cart.currency.symbol }}</span>
+                        <input
+                          type="number"
+                          class="tt-coll__price-input"
+                          name="{{ filter.min_value.param_name }}"
+                          placeholder="Min"
+                          min="0"
+                          max="{{ filter.range_max | money_without_currency | remove: ',' }}"
+                          value="{{ filter.min_value.value | money_without_currency | remove: ',' }}"
+                          data-price-min
+                        >
+                      </div>
+                      <span class="tt-coll__price-sep">–</span>
+                      <div class="tt-coll__price-field">
+                        <span class="tt-coll__price-symbol">{{ cart.currency.symbol }}</span>
+                        <input
+                          type="number"
+                          class="tt-coll__price-input"
+                          name="{{ filter.max_value.param_name }}"
+                          placeholder="Max"
+                          min="0"
+                          max="{{ filter.range_max | money_without_currency | remove: ',' }}"
+                          value="{{ filter.max_value.value | money_without_currency | remove: ',' }}"
+                          data-price-max
+                        >
+                      </div>
+                    </div>
+                    <button class="tt-coll__price-apply" type="button" data-price-apply>Apply</button>
+                  </div>
+
+                {%- else -%}
+                  <ul class="tt-coll__filter-list" role="list">
+                    {%- for value in filter.values -%}
+                      {%- assign is_disabled = false -%}
+                      {%- if value.count == 0 and value.active == false -%}
+                        {%- assign is_disabled = true -%}
+                      {%- endif -%}
+                      <li class="tt-coll__filter-item{% if is_disabled %} is-disabled{% endif %}">
+                        <a
+                          href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}"
+                          class="tt-coll__filter-link{% if value.active %} is-active{% endif %}"
+                          {% if is_disabled %}aria-disabled="true" tabindex="-1"{% endif %}
+                        >
+                          <span class="tt-coll__filter-check" aria-hidden="true">
+                            {%- if value.active -%}
+                              <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                                <path d="M1 3.5L3.5 6L8 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>
+                            {%- endif -%}
+                          </span>
+                          <span class="tt-coll__filter-name">{{ value.label }}</span>
+                          <span class="tt-coll__filter-count">({{ value.count }})</span>
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+
+              </div>
+            </div>
+          {%- endfor -%}
+
+        {%- else -%}
+
+          {%- comment -%} FALLBACK manual filters {%- endcomment -%}
+          <div class="tt-coll__filter-group" data-filter-group>
+            <button class="tt-coll__filter-toggle" type="button" aria-expanded="true" data-filter-toggle>
+              <span>Category</span>
+              <svg class="tt-coll__filter-caret" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="tt-coll__filter-body">
+              <ul class="tt-coll__filter-list" role="list">
+                {%- assign cat_links = 'all,vegetables,grains,oils,honey-dairy' | split: ',' -%}
+                {%- assign cat_labels = 'All Products,Vegetables,Grains,Oils,Honey & Dairy' | split: ',' -%}
+                {%- for handle in cat_links -%}
+                  <li class="tt-coll__filter-item">
+                    <a href="/collections/{{ handle }}" class="tt-coll__filter-link{% if collection.handle == handle %} is-active{% endif %}">
+                      <span class="tt-coll__filter-check" aria-hidden="true">
+                        {%- if collection.handle == handle -%}
+                          <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                            <path d="M1 3.5L3.5 6L8 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        {%- endif -%}
+                      </span>
+                      <span class="tt-coll__filter-name">{{ cat_labels[forloop.index0] }}</span>
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          </div>
+
+        {%- endif -%}
+
+        {%- comment -%} ── SORT GROUP ── always visible ── {%- endcomment -%}
+        <div class="tt-coll__filter-group" data-filter-group>
+          <button class="tt-coll__filter-toggle" type="button" aria-expanded="true" data-filter-toggle>
+            <span>Sort By</span>
+            <svg class="tt-coll__filter-caret" width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="tt-coll__filter-body">
+            <ul class="tt-coll__filter-list" role="list">
+              {%- assign sort_options = 'price-ascending,price-descending,title-ascending,created-descending' | split: ',' -%}
+              {%- assign sort_labels = 'Price: Low to High,Price: High to Low,Name: A–Z,Newest First' | split: ',' -%}
+              {%- for sort_val in sort_options -%}
+                {%- assign is_sort_active = false -%}
+                {%- if collection.sort_by == sort_val -%}{%- assign is_sort_active = true -%}{%- endif -%}
+                <li class="tt-coll__filter-item">
+                  <a
+                    href="{{ collection.url }}?sort_by={{ sort_val }}{%- for filter in collection.filters -%}{%- for v in filter.active_values -%}&{{ v.param_name }}={{ v.value | url_encode }}{%- endfor -%}{%- endfor -%}"
+                    class="tt-coll__filter-link{% if is_sort_active %} is-active{% endif %}"
+                  >
+                    <span class="tt-coll__filter-check" aria-hidden="true">
+                      {%- if is_sort_active -%}
+                        <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                          <path d="M1 3.5L3.5 6L8 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      {%- endif -%}
+                    </span>
+                    <span class="tt-coll__filter-name">{{ sort_labels[forloop.index0] }}</span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+    {%- comment -%} ── MOBILE FILTER TRIGGER ── {%- endcomment -%}
+    <button class="tt-coll__mobile-toggle" type="button" data-mobile-filter-toggle aria-expanded="false" aria-controls="ttFilterSidebar">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      Filters
+      {%- if has_active -%}
+        <span class="tt-coll__mobile-badge">{{ collection.filters | map: 'active_values' | map: 'size' | sum }}</span>
+      {%- endif -%}
+    </button>
+
+    {%- comment -%} ── PRODUCT GRID AREA ── {%- endcomment -%}
+    <main class="tt-coll__main" id="tt-product-grid">
+
+      <div class="tt-coll__toolbar">
+        <p class="tt-coll__results" aria-live="polite">
+          Showing <strong>{{ collection.products.size }}</strong>
+          {%- if collection.products_count != collection.products.size -%}
+            of {{ collection.products_count }}
+          {%- endif -%}
+          products
+        </p>
+        <button class="tt-coll__layout-toggle" type="button" data-layout-toggle aria-label="Toggle grid layout">
+          <svg class="tt-coll__layout-icon tt-coll__layout-icon--grid" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.4"/>
+            <rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.4"/>
+            <rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.4"/>
+            <rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.4"/>
+          </svg>
+          <svg class="tt-coll__layout-icon tt-coll__layout-icon--list" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M1 4h14M1 8h14M1 12h14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <ul class="tt-coll__grid" id="tt-product-list" role="list" data-grid>
+        {%- for product in collection.products -%}
+          <li class="tt-coll__item" style="--item-index: {{ forloop.index }}" data-product-item>
+            <article class="tt-coll__card">
+
+              <a href="{{ product.url }}" class="tt-coll__img-wrap" tabindex="-1" aria-hidden="true">
+                {%- if product.featured_image -%}
+                  {%- assign img_loading = 'lazy' -%}
+                  {%- if forloop.index <= 4 -%}
+                    {%- assign img_loading = 'eager' -%}
+                  {%- endif -%}
+                  {%- assign img_alt = product.featured_image.alt | escape -%}
+                  {{ product.featured_image | image_url: width: 700 | image_tag: class: 'tt-coll__img', alt: img_alt, loading: img_loading }}
+                  {%- if product.images.size > 1 -%}
+                    {%- assign img_alt2 = product.images[1].alt | escape -%}
+                    {{ product.images[1] | image_url: width: 700 | image_tag: class: 'tt-coll__img tt-coll__img--hover', alt: img_alt2, loading: 'lazy' }}
+                  {%- endif -%}
+                {%- else -%}
+                  <div class="tt-coll__img-placeholder" aria-hidden="true"></div>
+                {%- endif -%}
+
+                <div class="tt-coll__overlay" aria-hidden="true">
+                  <span class="tt-coll__cta-text">View Product</span>
+                </div>
+
+                {%- if product.compare_at_price > product.price -%}
+                  <span class="tt-coll__badge tt-coll__badge--sale">Sale</span>
+                {%- elsif product.tags contains 'new' -%}
+                  <span class="tt-coll__badge tt-coll__badge--new">New</span>
+                {%- endif -%}
+              </a>
+
+              <div class="tt-coll__info">
+                <div class="tt-coll__info-left">
+                  <h3 class="tt-coll__name">
+                    <a href="{{ product.url }}">{{ product.title }}</a>
+                  </h3>
+                  {%- if product.type != blank -%}
+                    <p class="tt-coll__type">{{ product.type }}</p>
+                  {%- endif -%}
+                </div>
+                <div class="tt-coll__info-right">
+                  {%- if product.compare_at_price > product.price -%}
+                    <p class="tt-coll__price tt-coll__price--sale">
+                      <span class="tt-coll__price-now">{{ product.price | money }}</span>
+                      <s class="tt-coll__price-was">{{ product.compare_at_price | money }}</s>
+                    </p>
+                  {%- else -%}
+                    <p class="tt-coll__price">{{ product.price | money }}</p>
+                  {%- endif -%}
+                </div>
+              </div>
+
+            </article>
+          </li>
+        {%- else -%}
+          <li class="tt-coll__empty" role="alert">
+            <p>No products match your current filters.</p>
+            <a href="{{ collection.url }}" class="tt-coll__empty-link">Clear filters</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+    </main>
+
+  </div>
+</section>
+
+<script src="{{ 'tt-collection.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "TT Collection",
+  "settings": []
+}
+{% endschema %}

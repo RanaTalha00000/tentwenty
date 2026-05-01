@@ -1,0 +1,48 @@
+<header class="tt-header">
+  <nav class="tt-nav">
+    <ul class="tt-nav__links">
+      {%- for link in linklists.main-menu.links -%}
+        {%- unless link.title == 'Contact us' -%}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {%- endunless -%}
+      {%- endfor -%}
+    </ul>
+
+    {%- assign cta = linklists.main-menu.links | where: 'title', 'Contact us' | first -%}
+    {%- if cta -%}
+      <a href="{{ cta.url }}" class="tt-nav__cta">
+        {{ cta.title }}
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </a>
+    {%- endif -%}
+
+    <button class="tt-nav__burger" id="ttBurger" aria-label="Menu" aria-expanded="false" aria-controls="ttMobileMenu">
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <div class="tt-mobile-menu" id="ttMobileMenu">
+    <ul class="tt-mobile-menu__links">
+      {%- for link in linklists.main-menu.links -%}
+        {%- unless link.title == 'Contact us' -%}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {%- endunless -%}
+      {%- endfor -%}
+      {%- if cta -%}
+        <li><a href="{{ cta.url }}" class="tt-mobile-menu__cta">{{ cta.title }} →</a></li>
+      {%- endif -%}
+    </ul>
+  </div>
+</header>
+
+<script src="{{ 'tt-header.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "TT Header",
+  "settings": []
+}
+{% endschema %}

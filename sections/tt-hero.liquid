@@ -1,0 +1,81 @@
+<section class="tt-hero">
+
+  <div class="tt-hero__slides">
+    {% for i in (1..4) %}
+      {% assign img_setting = 'slide' | append: i | append: '_image' %}
+      {% assign label_setting = 'slide' | append: i | append: '_label' %}
+      {% assign title_setting = 'slide' | append: i | append: '_title' %}
+      {% assign slide_img = section.settings[img_setting] %}
+      {% assign slide_label = section.settings[label_setting] %}
+      {% assign slide_title = section.settings[title_setting] %}
+
+      <div class="tt-hero__slide {% if i == 1 %}active{% endif %}" data-index="{{ i | minus: 1 }}">
+
+        {% if slide_img %}
+          {{ slide_img | image_url: width: 1920 | image_tag:
+            class: 'tt-hero__img',
+            alt: slide_img.alt,
+            loading: 'eager',
+            widths: '375, 750, 1080, 1440, 1920',
+            sizes: '100vw'
+          }}
+        {% endif %}
+
+        <div class="tt-hero__overlay"></div>
+
+        <div class="tt-hero__content">
+          <span class="tt-hero__label">{{ slide_label }}</span>
+          <h1 class="tt-hero__title">{{ slide_title }}</h1>
+        </div>
+
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="tt-hero__nav">
+    <button class="tt-hero__next" aria-label="Next slide">NEXT</button>
+    <div class="tt-hero__thumbnails">
+      {% for i in (1..4) %}
+        <div class="tt-hero__thumb {% if forloop.first %}active{% endif %}">
+          <div class="tt-hero__thumb-progress"></div>
+          {% assign img_key = 'slide' | append: i | append: '_image' %}
+          {% if section.settings[img_key] %}
+            {{ section.settings[img_key] | image_url: width: 120 | image_tag: class: 'tt-hero__thumb-img', loading: 'lazy' }}
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="tt-hero__counter">
+      <span class="tt-hero__current">01</span>
+      <span class="tt-hero__divider"></span>
+      <span class="tt-hero__total">04</span>
+    </div>
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Hero Slider",
+  "settings": [
+    { "type": "image_picker", "id": "slide1_image", "label": "Slide 1 Image" },
+    { "type": "text", "id": "slide1_label", "label": "Slide 1 Label", "default": "Welcome To TenTwenty Farms" },
+    { "type": "text", "id": "slide1_title", "label": "Slide 1 Title", "default": "From Our Farms To Your Hands" },
+
+    { "type": "image_picker", "id": "slide2_image", "label": "Slide 2 Image" },
+    { "type": "text", "id": "slide2_label", "label": "Slide 2 Label", "default": "Naturally Grown" },
+    { "type": "text", "id": "slide2_title", "label": "Slide 2 Title", "default": "Straight From The Earth" },
+
+    { "type": "image_picker", "id": "slide3_image", "label": "Slide 3 Image" },
+    { "type": "text", "id": "slide3_label", "label": "Slide 3 Label", "default": "100% Organic" },
+    { "type": "text", "id": "slide3_title", "label": "Slide 3 Title", "default": "Grown Without Compromise" },
+
+    { "type": "image_picker", "id": "slide4_image", "label": "Slide 4 Image" },
+    { "type": "text", "id": "slide4_label", "label": "Slide 4 Label", "default": "Harvested With Care" },
+    { "type": "text", "id": "slide4_title", "label": "Slide 4 Title", "default": "Pure. Simple. Fresh." }
+  ],
+  "presets": [{ "name": "Hero Slider" }]
+}
+{% endschema %}
+
+<script src="{{ 'tt-hero.js' | asset_url }}" defer></script>

@@ -1,0 +1,203 @@
+{%- liquid
+  assign explore_list  = linklists[section.settings.explore_menu]
+  assign company_list  = linklists[section.settings.company_menu]
+  assign brand_name    = section.settings.brand_name    | default: shop.name
+  assign tagline       = section.settings.tagline       | default: ''
+  assign contact_email = section.settings.contact_email | default: ''
+  assign contact_phone = section.settings.contact_phone | default: ''
+  assign contact_location = section.settings.contact_location | default: ''
+-%}
+
+<footer class="tt-footer">
+
+  {%- comment -%} TOP ROW {%- endcomment -%}
+  <div class="tt-footer__top">
+
+    <div class="tt-footer__brand">
+      <a href="/" class="tt-footer__logo">{{ brand_name }}</a>
+      {%- if tagline != blank -%}
+        <p class="tt-footer__tagline">{{ tagline }}</p>
+      {%- endif -%}
+    </div>
+
+    <nav class="tt-footer__nav">
+
+      {%- comment -%} EXPLORE column — linklist driven {%- endcomment -%}
+      {%- if explore_list != blank -%}
+        <div class="tt-footer__nav-group">
+          <p class="tt-footer__nav-heading">{{ section.settings.explore_label | default: 'Explore' }}</p>
+          <ul class="tt-footer__nav-list">
+            {%- for link in explore_list.links -%}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} COMPANY column — linklist driven {%- endcomment -%}
+      {%- if company_list != blank -%}
+        <div class="tt-footer__nav-group">
+          <p class="tt-footer__nav-heading">{{ section.settings.company_label | default: 'Company' }}</p>
+          <ul class="tt-footer__nav-list">
+            {%- for link in company_list.links -%}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} GET IN TOUCH column {%- endcomment -%}
+      <div class="tt-footer__nav-group">
+        <p class="tt-footer__nav-heading">{{ section.settings.contact_label | default: 'Get in Touch' }}</p>
+        <ul class="tt-footer__nav-list tt-footer__contact-list">
+          {%- if contact_email != blank -%}
+            <li>
+              <span class="tt-footer__contact-label">Email</span>
+              <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>
+            </li>
+          {%- endif -%}
+          {%- if contact_phone != blank -%}
+            <li>
+              <span class="tt-footer__contact-label">Phone</span>
+              <a href="tel:{{ contact_phone | remove: ' ' | remove: '-' }}">{{ contact_phone }}</a>
+            </li>
+          {%- endif -%}
+          {%- if contact_location != blank -%}
+            <li>
+              <span class="tt-footer__contact-label">Location</span>
+              <span>{{ contact_location }}</span>
+            </li>
+          {%- endif -%}
+        </ul>
+      </div>
+
+    </nav>
+  </div>
+
+  {%- comment -%} DIVIDER {%- endcomment -%}
+  <div class="tt-footer__divider"></div>
+
+  {%- comment -%} BOTTOM ROW {%- endcomment -%}
+  <div class="tt-footer__bottom">
+
+    <p class="tt-footer__copy">
+      &copy; {{ 'now' | date: '%Y' }} {{ brand_name }}. All rights reserved.
+    </p>
+
+    <div class="tt-footer__social">
+      {%- if settings.social_instagram_link != blank -%}
+        <a href="{{ settings.social_instagram_link }}" class="tt-footer__social-link" aria-label="Instagram" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+          </svg>
+        </a>
+      {%- endif -%}
+      {%- if settings.social_linkedin_link != blank -%}
+        <a href="{{ settings.social_linkedin_link }}" class="tt-footer__social-link" aria-label="LinkedIn" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/>
+            <rect x="2" y="9" width="4" height="12"/>
+            <circle cx="4" cy="4" r="2"/>
+          </svg>
+        </a>
+      {%- endif -%}
+      {%- if settings.social_twitter_link != blank -%}
+        <a href="{{ settings.social_twitter_link }}" class="tt-footer__social-link" aria-label="Twitter / X" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.7 5.5 4.4 9 4.5-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+
+    <p class="tt-footer__legal">
+      <a href="{{ shop.privacy_policy.url | default: '/policies/privacy-policy' }}">Privacy</a>
+      <span>&middot;</span>
+      <a href="{{ shop.terms_of_service.url | default: '/policies/terms-of-service' }}">Terms</a>
+    </p>
+
+  </div>
+
+</footer>
+
+{% schema %}
+{
+  "name": "TT Footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Brand"
+    },
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand Name",
+      "default": "TenTwenty Farms"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "From Our Farms To Your Hands"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "link_list",
+      "id": "explore_menu",
+      "label": "Explore Menu",
+      "info": "Create a navigation menu in Online Store > Navigation and select it here."
+    },
+    {
+      "type": "text",
+      "id": "explore_label",
+      "label": "Explore Column Heading",
+      "default": "Explore"
+    },
+    {
+      "type": "link_list",
+      "id": "company_menu",
+      "label": "Company Menu",
+      "info": "Create a navigation menu in Online Store > Navigation and select it here."
+    },
+    {
+      "type": "text",
+      "id": "company_label",
+      "label": "Company Column Heading",
+      "default": "Company"
+    },
+    {
+      "type": "header",
+      "content": "Contact Details"
+    },
+    {
+      "type": "text",
+      "id": "contact_label",
+      "label": "Contact Column Heading",
+      "default": "Get in Touch"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Email Address",
+      "default": "hello@tentwenty.me"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Phone Number",
+      "default": "+971 4 369 1777"
+    },
+    {
+      "type": "text",
+      "id": "contact_location",
+      "label": "Location",
+      "default": "Dubai, UAE"
+    }
+  ]
+}
+{% endschema %}
